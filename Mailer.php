@@ -7,7 +7,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer extends \mii\email\Mailer
 {
-
     /**
      * @var \PHPMailer\PHPMailer\PHPMailer
      */
@@ -45,7 +44,6 @@ class Mailer extends \mii\email\Mailer
 
     public function send($to = null, $name = null, $subject = null, $body = null)
     {
-
         parent::send($to, $name, $subject, $body);
 
         try {
@@ -66,7 +64,7 @@ class Mailer extends \mii\email\Mailer
             $this->mailer->clearAllRecipients();
 
         } catch (\Throwable $t) {
-            \Mii::error(Exception::text($t));
+            \Mii::error($t);
             $result = false;
         }
 
