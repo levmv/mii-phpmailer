@@ -10,8 +10,6 @@
     "php": ">=7.1"
   },
   "autoload": {
-    "psr-4": {
-      "levmorozov\\phpmailer\\": "./"
-    }
+    "classmap" : ["Mailer.php"]
   }
 }
