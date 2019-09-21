@@ -4,6 +4,7 @@
   "description": "Mii component-bridge to phpmailer",
   "homepage": "https://github.com/levmorozov/mii-phpmailer",
   "license": "MIT",
+  "minimum-stability": "stable",
   "require": {
     "phpmailer/phpmailer": "~6.0.7",
     "levmorozov/mii": "^1",
