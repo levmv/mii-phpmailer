@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Mailer extends \mii\email\Mailer
 {
     /**
-     * @var \PHPMailer\PHPMailer\PHPMailer
+     * @var PHPMailer
      */
     public $mailer;
 
@@ -46,27 +46,21 @@ class Mailer extends \mii\email\Mailer
     {
         parent::send($to, $name, $subject, $body);
 
-        try {
-            foreach ($this->to as $address) {
-                $this->mailer->addAddress($address[0], $address[1]);
-            }
-
-            $this->mailer->Subject = $this->subject;
-
-            if ($this->is_html) {
-                $this->mailer->msgHTML($this->body, $this->assets_path);
-            } else {
-                $this->mailer->Body = $this->body;
-            }
-
-            $result = $this->mailer->send();
-
-            $this->mailer->clearAllRecipients();
-
-        } catch (\Throwable $t) {
-            \Mii::error($t);
-            $result = false;
+        foreach ($this->to as $address) {
+            $this->mailer->addAddress($address[0], $address[1]);
         }
+
+        $this->mailer->Subject = $this->subject;
+
+        if ($this->is_html) {
+            $this->mailer->msgHTML($this->body, $this->assets_path);
+        } else {
+            $this->mailer->Body = $this->body;
+        }
+
+        $result = $this->mailer->send();
+
+        $this->mailer->clearAllRecipients();
 
         return $result;
     }
