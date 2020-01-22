@@ -2,21 +2,28 @@
 
 namespace levmorozov\phpmailer;
 
-use mii\core\Exception;
+use mii\core\Component;
+use mii\web\Block;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Mailer extends \mii\email\Mailer
+class Mailer extends Component
 {
     /**
      * @var PHPMailer
      */
     public $mailer;
 
-    protected $transport = 'smtp';
     protected $config;
 
-    protected $from_mail;
-    protected $from_name = '';
+    protected $to = [];
+    protected $from;
+    protected $reply_to;
+    protected $subject;
+    protected $attachments = [];
+
+    protected $is_html = true;
+
+    protected $assets_path = '';
 
 
     public function init(array $config = []): void
@@ -28,13 +35,7 @@ class Mailer extends \mii\email\Mailer
 
         $this->mailer->CharSet = 'UTF-8';
 
-        if ($this->transport === 'sendmail') {
-            $this->mailer->isSendmail();
-        }
-
-        if ($this->transport === 'smtp') {
-            $this->mailer->isSMTP();
-        }
+        $this->mailer->isSMTP();
 
         foreach ($this->config as $key => $value) {
             $this->mailer->$key = $value;
@@ -42,10 +43,72 @@ class Mailer extends \mii\email\Mailer
     }
 
 
-    public function send($to = null, $name = null, $subject = null, $body = null)
-    {
-        parent::send($to, $name, $subject, $body);
+    public function attachment(string $attachment) {
+        $this->attachments[] = $attachment;
 
+        return $this;
+    }
+
+    public function to(string $to, $name = '', $clear = false) {
+        if($clear)
+            $this->to = [];
+
+        $this->to[] = [$to, $name];
+
+        return $this;
+    }
+
+    public function from(string $from, $name = '') {
+        $this->from = [$from, $name];
+
+        return $this;
+    }
+
+    public function reply_to(string $to, $name = '') {
+
+        $this->reply_to = [$to, $name];
+
+        return $this;
+    }
+
+    public function subject(string $subject) {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function html_mode($is_html = true) {
+        $this->is_html = $is_html;
+        return $this;
+    }
+
+    public function body($body) {
+        if ($body instanceof Block) {
+            $this->body = $body->render(true);
+            $this->assets_path = \Mii::$app->blocks->assets_path_by_name($body->name());
+            $this->is_html = true;
+        } else {
+            $this->body = $body;
+        }
+        return $this;
+    }
+
+
+    public function reset() {
+        $this->from = '';
+        $this->to = [];
+        $this->reply_to = '';
+        $this->subject = '';
+        $this->body = '';
+        $this->attachments = [];
+        $this->assets_path = '';
+
+        return $this;
+    }
+
+
+    public function send()
+    {
         foreach ($this->to as $address) {
             $this->mailer->addAddress($address[0], $address[1]);
         }
