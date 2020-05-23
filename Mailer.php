@@ -1,12 +1,12 @@
 <?php
 
-namespace levmorozov\phpmailer;
+namespace mii\mailer;
 
 use mii\core\Component;
 use mii\web\Block;
-use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer as VendorPHPMailer;
 
-class Mailer extends Component
+class PHPMailer extends Component
 {
     /**
      * @var PHPMailer
@@ -31,7 +31,7 @@ class Mailer extends Component
 
         parent::init($config);
 
-        $this->mailer = new PHPMailer(true);
+        $this->mailer = new VendorPHPMailer(true);
 
         $this->mailer->CharSet = 'UTF-8';
 
