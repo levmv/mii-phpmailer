@@ -6,9 +6,9 @@
   "license": "MIT",
   "minimum-stability": "stable",
   "require": {
-    "phpmailer/phpmailer": "~6.1.4",
-    "levmorozov/mii": "^1.8.0",
-    "php": ">=7.2"
+    "phpmailer/phpmailer": "~6.5.1",
+    "levmorozov/mii": "^1.10.0",
+    "php": ">=7.4"
   },
   "autoload": {
     "classmap" : ["Mailer.php"]

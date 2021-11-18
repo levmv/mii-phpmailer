@@ -4,26 +4,22 @@ namespace mii\mailer;
 
 use mii\core\Component;
 use mii\web\Block;
-use PHPMailer\PHPMailer\PHPMailer as VendorPHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
-class PHPMailer extends Component
+class Mailer extends Component
 {
-    /**
-     * @var PHPMailer
-     */
-    public $mailer;
+    public PHPMailer $mailer;
 
-    protected $config;
+    protected array $config = [];
 
-    protected $to = [];
-    protected $from;
-    protected $reply_to;
-    protected $subject;
-    protected $attachments = [];
+    protected array $to = [];
+    protected string $subject;
+    protected string $body;
+    protected array $attachments = [];
 
-    protected $is_html = true;
+    protected bool $isHtml = true;
 
-    protected $assets_path = '';
+    protected string $assets_path = '';
 
 
     public function init(array $config = []): void
@@ -31,7 +27,7 @@ class PHPMailer extends Component
 
         parent::init($config);
 
-        $this->mailer = new VendorPHPMailer(true);
+        $this->mailer = new PHPMailer(true);
 
         $this->mailer->CharSet = 'UTF-8';
 
@@ -49,24 +45,11 @@ class PHPMailer extends Component
         return $this;
     }
 
-    public function to(string $to, $name = '', $clear = false) {
+    public function to(string $to, string $name = '', bool $clear = false) {
         if($clear)
             $this->to = [];
 
         $this->to[] = [$to, $name];
-
-        return $this;
-    }
-
-    public function from(string $from, $name = '') {
-        $this->from = [$from, $name];
-
-        return $this;
-    }
-
-    public function reply_to(string $to, $name = '') {
-
-        $this->reply_to = [$to, $name];
 
         return $this;
     }
@@ -77,8 +60,8 @@ class PHPMailer extends Component
         return $this;
     }
 
-    public function html_mode($is_html = true) {
-        $this->is_html = $is_html;
+    public function htmlMode(bool $is_html = true) {
+        $this->isHtml = $is_html;
         return $this;
     }
 
@@ -86,7 +69,7 @@ class PHPMailer extends Component
         if ($body instanceof Block) {
             $this->body = $body->render(true);
             $this->assets_path = \Mii::$app->blocks->assets_path_by_name($body->name());
-            $this->is_html = true;
+            $this->isHtml = true;
         } else {
             $this->body = $body;
         }
@@ -95,9 +78,7 @@ class PHPMailer extends Component
 
 
     public function reset() {
-        $this->from = '';
         $this->to = [];
-        $this->reply_to = '';
         $this->subject = '';
         $this->body = '';
         $this->attachments = [];
@@ -115,7 +96,7 @@ class PHPMailer extends Component
 
         $this->mailer->Subject = $this->subject;
 
-        if ($this->is_html) {
+        if ($this->isHtml) {
             $this->mailer->msgHTML($this->body, $this->assets_path);
         } else {
             $this->mailer->Body = $this->body;
