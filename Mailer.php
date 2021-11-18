@@ -10,8 +10,6 @@ class Mailer extends Component
 {
     public PHPMailer $mailer;
 
-    protected array $config = [];
-
     protected array $to = [];
     protected string $subject;
     protected string $body;
@@ -21,10 +19,16 @@ class Mailer extends Component
 
     protected string $assets_path = '';
 
+    protected string $From = '';
+    protected string $FromName = '';
+    protected string $Host = '';
+    protected string $Username = '';
+    protected string $Password = '';
+
+    protected array $config = [];
 
     public function init(array $config = []): void
     {
-
         parent::init($config);
 
         $this->mailer = new PHPMailer(true);
@@ -32,6 +36,17 @@ class Mailer extends Component
         $this->mailer->CharSet = 'UTF-8';
 
         $this->mailer->isSMTP();
+
+        $this->config = array_replace([
+            'From' => $this->From,
+            'FromName' => $this->FromName,
+            'Host' => $this->Host,
+            'Username' => $this->Username,
+            'Password' => $this->Password,
+            'SMTPAuth' => true,
+            'SMTPSecure' => PHPMailer::ENCRYPTION_STARTTLS,
+            'Port' => 587
+        ], $this->config);
 
         foreach ($this->config as $key => $value) {
             $this->mailer->$key = $value;
