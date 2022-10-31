@@ -6,8 +6,8 @@
   "license": "MIT",
   "minimum-stability": "stable",
   "require": {
-    "phpmailer/phpmailer": "~6.5.1",
-    "levmorozov/mii": "^1.10.0",
+    "phpmailer/phpmailer": "~6.5.4",
+    "levmorozov/mii": "^1.10",
     "php": ">=7.4"
   },
   "autoload": {
