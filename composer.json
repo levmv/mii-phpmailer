@@ -1,13 +1,13 @@
 {
-  "name": "levmorozov/mii-phpmailer",
+  "name": "levmv/mii-phpmailer",
   "type": "library",
   "description": "Mii component-bridge to phpmailer",
-  "homepage": "https://github.com/levmorozov/mii-phpmailer",
+  "homepage": "https://github.com/levmv/mii-phpmailer",
   "license": "MIT",
   "minimum-stability": "stable",
   "require": {
     "phpmailer/phpmailer": "~v6.6.5",
-    "levmorozov/mii": "^1.10",
+    "levmv/mii": "^1.10",
     "php": ">=7.4"
   },
   "autoload": {
