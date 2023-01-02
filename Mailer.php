@@ -11,8 +11,8 @@ class Mailer extends Component
     public PHPMailer $mailer;
 
     protected array $to = [];
-    protected string $subject;
-    protected string $body;
+    protected string $subject = '';
+    protected string $body = '';
     protected array $attachments = [];
 
     protected bool $isHtml = true;
