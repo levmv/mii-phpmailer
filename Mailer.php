@@ -45,6 +45,7 @@ class Mailer extends Component
             'Password' => $this->Password,
             'SMTPAuth' => true,
             'SMTPSecure' => PHPMailer::ENCRYPTION_STARTTLS,
+            'Timeout' => 300,
             'Port' => 587
         ], $this->config);
 
