@@ -25,6 +25,10 @@ class Mailer extends Component
     protected string $Username = '';
     protected string $Password = '';
 
+    protected int $Port = 587;
+
+    protected int $Timeout = 300;
+
     protected array $config = [];
 
     public function init(array $config = []): void
@@ -45,8 +49,8 @@ class Mailer extends Component
             'Password' => $this->Password,
             'SMTPAuth' => true,
             'SMTPSecure' => PHPMailer::ENCRYPTION_STARTTLS,
-            'Timeout' => 300,
-            'Port' => 587
+            'Timeout' => $this->Timeout,
+            'Port' => $this->Port
         ], $this->config);
 
         foreach ($this->config as $key => $value) {
